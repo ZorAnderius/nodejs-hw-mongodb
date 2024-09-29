@@ -39,13 +39,19 @@ export const setupServer = () => {
     try {
       const { contactId } = req.params;
       const contact = await getContactByID(contactId);
+      if (!contact) {
+        res.status(404).json({
+          message: 'Contact not found',
+        });
+        return;
+      }
       res.json({
         status: 200,
         message: `Successfully found contact with id ${contactId}!`,
         data: contact,
       });
     } catch (error) {
-      next({ status: 404, message: 'Contact not found', error });
+      next(error);
     }
   });
 
@@ -56,7 +62,8 @@ export const setupServer = () => {
   });
 
   app.use((err, req, res, next) => {
-    const { status = 500, message = 'Something went wrong' } = err;
+    let { status = 500, message } = err;
+    message = status === 500 ? 'Something went wrong' : message;
     res.status(status).json({
       message,
     });
