@@ -33,3 +33,10 @@ export const updateContact = async (contactId, payload, option = {}) => {
     isNew: Boolean(rawData?.lastErrorObject?.upserted),
   };
 };
+
+export const deleteContact = async (contactId) => {
+  const contact = await ContactsCollection.findOneAndDelete({
+    _id: contactId,
+  });
+  return contact;
+};
