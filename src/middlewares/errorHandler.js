@@ -2,12 +2,22 @@ import { isHttpError } from 'http-errors';
 
 export const errorHandler = (err, req, res, next) => {
   if (isHttpError(err)) {
-    res.status(err.status).json({
+    return res.status(err.status).json({
       status: err.status,
       message: err.message,
       data: err.name,
     });
-    return;
+  }
+
+  if (err.isJoi) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Validation error!',
+      data: err.details.map((error) => ({
+        message: error.message,
+        path: error.path,
+      })),
+    });
   }
 
   res.status(500).json({
