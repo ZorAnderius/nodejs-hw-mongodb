@@ -4,10 +4,12 @@ const parseType = (type) => {
   if (isContactType) return type;
 };
 const parseString = (string) => {
+  if (typeof string !== 'string') return;
   if (string?.length > 0) return string.trim();
 };
 
 const parseIsFavourite = (isFavourite) => {
+  if (typeof isFavourite !== 'string') return;
   const parsedFavourite = isFavourite && JSON.parse(isFavourite);
   if (typeof parsedFavourite === 'boolean') return parsedFavourite;
 };

@@ -1,6 +1,7 @@
 import { env } from './utils/env.js';
 import { connect } from './constants/connection.js';
-import app, { logger } from './app.js';
+import { logger } from './utils/logger/logger.js';
+import app from './app.js';
 
 const PORT = Number(env(connect.PORT, '3000'));
 

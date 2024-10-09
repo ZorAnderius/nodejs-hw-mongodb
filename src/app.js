@@ -1,22 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import pino from 'pino';
 import pinoMiddleware from 'pino-http';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import router from './routers/contacts.js';
-
-export const logger = pino({
-  transport: {
-    target: 'pino-pretty',
-    options: {
-      colorize: true,
-      translateTime: 'SYS:standard',
-      ignore: 'req,res,hostname,pid',
-      messageFormat: '{msg}',
-    },
-  },
-});
+import { logger } from './utils/logger/logger.js';
 
 const app = express();
 

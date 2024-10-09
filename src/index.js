@@ -1,4 +1,4 @@
-import { logger } from './app.js';
+import { logger } from './utils/logger/logger.js';
 import { initMongoConnection } from './db/initMongoConnection.js';
 import { setupServer } from './server.js';
 
