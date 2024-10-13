@@ -8,6 +8,8 @@ export const registerUserController = async (req, res) => {
   if (!user) throw createHttpError(400, 'Bad request');
 
   res.status(201).json({
+    status: 201,
+    message: 'Successfully registered a user!',
     data: serializeUser(user),
   });
 };
