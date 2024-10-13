@@ -6,6 +6,7 @@ import { calculatePaginationData } from '../utils/pagination/calculatePagination
 import createHttpError from 'http-errors';
 
 export const getAllContacts = async ({
+  userId,
   page = defaultPagination.page,
   perPage = defaultPagination.perPage,
   sortBy = '_id',
@@ -15,7 +16,7 @@ export const getAllContacts = async ({
   const limit = perPage;
   const skip = (page - 1) * perPage;
 
-  const contactQuery = ContactsCollection.find();
+  const contactQuery = ContactsCollection.find({ userId });
 
   createFilterQueries(contactQuery, filter);
 
@@ -39,8 +40,8 @@ export const getAllContacts = async ({
   };
 };
 
-export const getContactByID = async (contactId) => {
-  const contact = await ContactsCollection.findById(contactId);
+export const getContactByID = async (contactId, userId) => {
+  const contact = await ContactsCollection.findOne({ _id: contactId, userId });
   return contact;
 };
 
@@ -49,9 +50,14 @@ export const addContact = async (payload) => {
   return contact;
 };
 
-export const updateContact = async (contactId, payload, option = {}) => {
-  const rawData = await ContactsCollection.findByIdAndUpdate(
-    { _id: contactId },
+export const updateContact = async (
+  contactId,
+  payload,
+  userId,
+  option = {},
+) => {
+  const rawData = await ContactsCollection.findOneAndUpdate(
+    { _id: contactId, userId },
     payload,
     {
       includeResultMetadata: true,
@@ -67,9 +73,10 @@ export const updateContact = async (contactId, payload, option = {}) => {
   };
 };
 
-export const deleteContact = async (contactId) => {
+export const deleteContact = async (contactId, userId) => {
   const contact = await ContactsCollection.findOneAndDelete({
     _id: contactId,
+    userId,
   });
   return contact;
 };
