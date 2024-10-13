@@ -5,6 +5,7 @@ import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import router from './routers/index.js';
 import { logger } from './utils/logger/logger.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(
 );
 app.use(cors());
 app.use(pinoMiddleware({ logger }));
+app.use(cookieParser());
 
 app.use(router);
 

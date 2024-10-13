@@ -1,6 +1,9 @@
 import createHttpError from 'http-errors';
 import bcrypt from 'bcrypt';
+import { randomBytes } from 'node:crypto';
 import { UserCollection } from '../db/model/users.js';
+import { SessionCollection } from '../db/model/sessions.js';
+import { tokenLifeTime } from '../constants/tokenLifeTime.js';
 
 export const registerUser = async ({ name, email, password }) => {
   const isExist = await UserCollection.findOne({ email });
@@ -23,5 +26,16 @@ export const loginUser = async ({ email, password }) => {
   const isCorrectPassword = await bcrypt.compare(password, user.password);
   if (!isCorrectPassword)
     throw createHttpError(401, 'Email or password is invalid');
-  return user;
+
+  await SessionCollection.deleteOne({ userId: user._id });
+  const accessToken = randomBytes(30).toString('base64');
+  const refreshToken = randomBytes(30).toString('base64');
+
+  return await SessionCollection.create({
+    userId: user._id,
+    accessToken,
+    refreshToken,
+    accessTokenValidUntil: tokenLifeTime.FIFTEEN_MINUTE,
+    refreshTokenValidUntil: tokenLifeTime.DAYS,
+  });
 };
