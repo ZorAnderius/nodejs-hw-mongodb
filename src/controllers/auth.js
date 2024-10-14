@@ -10,12 +10,12 @@ import { tokenLifeTime } from '../constants/tokenLifeTime.js';
 const setupSession = async (res, session) => {
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
-    expires: tokenLifeTime.DAYS,
+    expires: new Date(Date.now() + tokenLifeTime.DAYS),
   });
 
   res.cookie('sessionId', session._id, {
     httpOnly: true,
-    expires: tokenLifeTime.DAYS,
+    expires: new Date(Date.now() + tokenLifeTime.DAYS),
   });
 };
 
