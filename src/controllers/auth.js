@@ -3,6 +3,8 @@ import {
   logoutUser,
   refreshUserSession,
   registerUser,
+  requestResetToken,
+  resetPassword,
 } from '../services/auth.js';
 import { serializeUser } from '../utils/serializeUse.js';
 import { tokenLifeTime } from '../constants/tokenLifeTime.js';
@@ -57,4 +59,22 @@ export const logoutUserController = async (req, res) => {
   res.clearCookie('refreshToken');
 
   res.status(204).send();
+};
+
+export const requestResetEmailController = async (req, res) => {
+  await requestResetToken(req.body.email);
+  res.json({
+    status: 200,
+    message: 'Reset password email was successfully sent!',
+    data: {},
+  });
+};
+export const resetPasswordController = async (req, res) => {  
+  await resetPassword(req.body, req.cookies.sessionId);
+
+  res.json({
+    status: 200,
+    message: 'Password was successfully reset!',
+    data: {},
+  });
 };
