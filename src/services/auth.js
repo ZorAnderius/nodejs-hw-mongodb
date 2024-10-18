@@ -11,7 +11,8 @@ import { tokenLifeTime } from '../constants/tokenLifeTime.js';
 import { env } from '../utils/env.js';
 import { sendEmail } from '../utils/sendMail.js';
 import { EMAIL } from '../constants/email.js';
-import { TEMPLATE_DIR } from '../constants/emailHandlerbars.js';
+import { TEMPLATE_DIR } from '../constants/pathHendlers.js';
+import { logger } from '../utils/logger/logger.js';
 
 const createSession = () => {
   const accessToken = randomBytes(30).toString('base64');
@@ -112,12 +113,20 @@ export const requestResetToken = async (email) => {
     link: `${env(EMAIL.APP_DOMAIN)}/reset-password?token=${resetToken}`,
   });
 
-  await sendEmail({
-    from: env(EMAIL.SMTP_FROM),
-    to: email,
-    subject: 'Reset your password',
-    html,
-  });
+  try {
+    await sendEmail({
+      from: env(EMAIL.SMTP_FROM),
+      to: email,
+      subject: 'Reset your password',
+      html,
+    });
+  } catch (error) {
+    logger.info(error.message);
+    throw createHttpError(
+      500,
+      'Failed to send the email, please try again later.',
+    );
+  }
 };
 
 export const resetPassword = async (payload, sessionId) => {
