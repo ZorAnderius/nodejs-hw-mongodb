@@ -24,3 +24,6 @@ User2:
 User3: 
     -email:    'zick.mik@gmail.com'
     -password: '!Az23Fas'
+
+
+HW6: [render link](https://nodejs-hw-mongodb-5-b0vp.onrender.com)
