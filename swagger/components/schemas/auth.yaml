@@ -1,0 +1,26 @@
+type: object
+required:
+  - name
+  - email
+  - password
+properties:
+  name:
+    description: "Contact's name"
+    type: string
+    example: 'John Doe'
+  email:
+    description: "Contact's email"
+    type: string
+    example: 'john.doe@example.com'
+  password:
+    description: "User's password (required minimum  one lowercase letter, one uppercase letter, one number, one special character (from this set !@#$%^&*). The total length of the password must be at least 8 characters.)"
+    type: string
+    example: 'Abc123%Z'
+  createdAt:
+    description: Timestamp (auto-generated)
+    type: string
+    example: 2024-01-01T00:00:01.765Z
+  updatedAt:
+    description: Timestamp (auto-generated)
+    type: string
+    example: 2024-01-02T11:12:13.765Z

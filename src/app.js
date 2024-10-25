@@ -7,6 +7,7 @@ import router from './routers/index.js';
 import { logger } from './utils/logger/logger.js';
 import cookieParser from 'cookie-parser';
 import { UPLOAD_DIR } from './constants/pathHendlers.js';
+import { swaggerDocs } from './middlewares/swaggerDocs.js';
 
 const app = express();
 
@@ -18,7 +19,8 @@ app.use(pinoMiddleware({ logger }));
 app.use(cookieParser());
 
 app.use(router);
-app.use("/uploads", express.static(UPLOAD_DIR));
+app.use('/uploads', express.static(UPLOAD_DIR));
+app.use('/api-docs', swaggerDocs());
 
 app.use('*', notFoundHandler);
 app.use(errorHandler);
