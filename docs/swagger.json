@@ -306,7 +306,7 @@
         }
       }
     },
-    "/contacts/:contactId": {
+    "/contacts/{contactId}": {
       "get": {
         "tags": [
           "Contacts"
