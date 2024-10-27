@@ -1,0 +1,25 @@
+tags:
+  - Auth
+summary: Logout user
+operationId: logoutUser
+description: 'Logs out the user by clearing session cookies.'
+security:
+  - bearerAuth: []
+responses:
+  '204':
+    description: Successfully logged out, no content
+  '401':
+    $ref: '../../components/responses/401.yaml'
+parameters:
+  - in: cookie
+    name: sessionId
+    schema:
+      type: string
+    required: true
+    description: 'Session ID stored in cookie, used to identify the session'
+  - in: cookie
+    name: refreshToken
+    schema:
+      type: string
+    required: true
+    description: 'Refresh token stored in cookie'

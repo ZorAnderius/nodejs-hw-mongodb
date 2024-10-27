@@ -1,0 +1,86 @@
+tags:
+  - Auth
+summary: Reset user password
+operationId: resetPassword
+description: 'Resets the user password using a token'
+security:
+  - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - password
+          - token
+        properties:
+          password:
+            type: string
+            description: "User's new password"
+            example: 'Str0ng@Pass!'
+          token:
+            type: string
+            description: 'Reset token provided to the user'
+            example: 'a1b2c3d4e5'
+      examples:
+        validRequest:
+          summary: Valid request
+          value:
+            password: 'Str0ng@Pass!'
+            token: 'a1b2c3d4e5'
+        invalidPasswordFormat:
+          summary: Invalid password format
+          value:
+            password: 'weakpassword'
+            token: 'a1b2c3d4e5'
+responses:
+  '200':
+    description: Password reset successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Password was successfully reset!
+            data:
+              type: object
+              example: {}
+  '400':
+    description: Validation error
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: "Validation error"
+            data:
+              type: object
+              properties:
+                errors:
+                  type: array
+                  items:
+                    type: string
+                  example: ["Password cannot be empty", "Invalid password format"]
+  '401':
+    $ref: '../../components/responses/401.yaml'
+  '409':
+    $ref: '../../components/responses/409.yaml'

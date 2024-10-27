@@ -1,0 +1,56 @@
+tags:
+  - Auth
+summary: Register new user
+operationId: createUser
+description: 'Register a new user with payload'
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - name
+          - email
+          - password
+        properties:
+          name:
+            description: "User's name"
+            type: string
+            example: 'John Doe'
+          email:
+            description: "User's email"
+            type: string
+            example: 'john.doe@example.com'
+          password:
+            description:  "User's password (required minimum  one lowercase letter, one uppercase letter, one number, one special character (from this set !@#$%^&*). The total length of the password must be at least 8 characters.)"
+            type: string
+            example: 'Abc123%Z'
+responses:
+  '201':
+    description: Register a new user with payload
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully registered a user!
+            data:
+              type: object
+              $ref: '../../components/schemas/auth.yaml'
+  '400':
+    $ref: '../../components/responses/400.yaml'
+  '401':
+    $ref: '../../components/responses/401.yaml'
+  '409':
+    $ref: '../../components/responses/409.yaml'
